@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ChicoFirst Cleanup Tracker</title>
+
+    <!-- CSS External -->
+    <link rel="stylesheet" type="text/css" href="https://gicwebsrv.csuchico.edu/webmaps/apis/jquery/plugins/ui/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="https://gicwebsrv.csuchico.edu/webmaps/apis/jquery/plugins/uniform/css/aristo.css" />
+    <link rel="stylesheet" type="text/css" href="https://gicwebsrv.csuchico.edu/webmaps/apis/leaflet/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="https://gicwebsrv.csuchico.edu/webmaps/apis/leaflet/plugins/groupedLayerControl/groupedlayercontrol.css" />
+    <link rel="stylesheet" type="text/css" href="https://gicwebsrv.csuchico.edu/webmaps/apis/leaflet/plugins/locate/L.Control.Locate.css" />
+
+    <!-- CSS Local -->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+</head>
+<body>
+
+    <dialog class="hide">
+        <div>
+            <div class="dialog_img"></div>
+            <button class="close">CLOSE</button>
+        </div>
+    </dialog>
+
+    <header>
+        <h2>ChicoFirst Cleanup Tracker</h2>
+        <p>Interactive Viewer</p>
+    </header>
+
+    <div class="body">
+        <div class="left_container">
+
+            <div class="default_container">
+                <div class="alt_header hide">
+                    <header>
+                        <h3>ChicoFirst Cleanup Tracker</h3>
+                        <p>Interactive Viewer</p>
+                    </header>
+                </div>
+                <div class="show_map hide">SHOW MAP</div>
+                <div class="create_new">CREATE NEW LOCATION</div>
+                <h3 class="if_mobile hide">Use "SHOW MAP" and</h3>
+                <h3>Select location on map (if available)</h3>
+                <h3>Or create a new location</h3>
+            </div>
+
+            <div class="hidden_container hide"></div>
+
+            <div class="create_point hide">
+                <div class="alt_header hide">
+                    <header>
+                        <h3>ChicoFirst Cleanup Tracker</h3>
+                        <p>Interactive Viewer</p>
+                    </header>
+                </div>
+                <h2>SELECT LOCATION</h2>
+                <div class="show_map hide">SHOW MAP</div>
+                <h3>Click anywhere on the map to<br>create a location marker</h3>
+                <h3 class="if_mobile hide">Use "SHOW MAP"</h3>
+                <h3>Select NEXT after marker is created</h3>
+                <h3 class="validate_marker hide">Marker is not created!</h3>
+                <div class="buttons">
+                    <input type="button" value="CANCEL"><input type="button" value="NEXT">
+                </div>
+            </div>
+
+            <div class="create_form hide">
+                <h2>CREATE LOCATION</h2>
+                <div class="process_content hide">
+                    <h3>Processing Content ...</h3>
+                    <div class="loader"></div>
+                </div>
+                <form action="/" method="post">
+                    <div class="scroll_container">
+                        <div class="delete_location hide">DELETE LOCATION</div>
+                        <input type="text" id="name" placeholder="Location Name (Required)" />
+                        <textarea id="description" placeholder="Description"></textarea>
+                        <h3 class="left">Images Before</h3>
+                        <div class="uploads_before dropzone_previews_before">
+                            <span></span>
+                        </div>
+                        <h3 class="left">Images After</h3>
+                        <div class="uploads_after dropzone_previews_after">
+                            <span></span>
+                        </div>
+                        <h3>NOTE: Images can take a couple minutes to show if page is refreshed after adding</h3>
+                        <h3 class="validate_location hide"><div>Location cannot be blank!</div></h3>
+                    </div>
+                    <div class="buttons">
+                        <input type="button" value="BACK"><input type="button" value="SUBMIT">
+                    </div>
+                </form>
+            </div>
+
+            <div class="point_data hide">
+                <div class="alt_header hide">
+                    <header>
+                        <h3>ChicoFirst Cleanup Tracker</h3>
+                        <p>Interactive Viewer</p>
+                    </header>
+                </div>
+                <h2>LOCATION INFORMATION</h2>
+                <div class="scroll_container">
+                    <div class="show_map hide">SHOW MAP</div>
+                    <h3>Location Name</h3>
+                    <span class="edit_location">EDIT / ADD IMAGES</span>
+                    <p class="location"></p>
+                    <h3>Description</h3>
+                    <p class="description"></p>
+                    <h3 class="img_before">Images Before</h3>
+                    <div class="img_container_before hide"></div>
+                    <h3 class="img_after">Images After</h3>
+                    <div class="img_container_after hide"></div>
+                </div>
+                <div class="buttons">
+                    <input type="button" value="CLOSE">
+                </div>
+            </div>
+
+        </div
+        ><div id="map"></div>
+    </div>
+    
+    <!-- Scripts External -->
+    <script type="text/javascript" src="https://gicwebsrv.csuchico.edu/webmaps/apis/jquery/jquery.js"></script>
+    <script type="text/javascript" src="https://gicwebsrv.csuchico.edu/webmaps/apis/jquery/plugins/ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://gicwebsrv.csuchico.edu/webmaps/apis/jquery/plugins/uniform/jquery.uniform.js"></script>
+    <script type="text/javascript" src="https://gicwebsrv.csuchico.edu/webmaps/apis/leaflet/leaflet.js"></script>
+    <script type="text/javascript" src="https://gicwebsrv.csuchico.edu/webmaps/apis/leaflet/plugins/esri/esri-leaflet.js"></script>
+    <script type="text/javascript" src="https://gicwebsrv.csuchico.edu/webmaps/apis/leaflet/plugins/groupedLayerControl/groupedlayercontrol_modified.js"></script>
+    <script type="text/javascript" src="https://gicwebsrv.csuchico.edu/webmaps/apis/leaflet/plugins/locate/L.Control.Locate.js"></script>
+    <script type="text/javascript" src="https://gicwebsrv.csuchico.edu/webmaps/apis/dropzonejs/dropzone.js"></script>
+    <script type="text/javascript" src="https://gicwebsrv.csuchico.edu/webmaps/apis/blueimp/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="https://gicwebsrv.csuchico.edu/webmaps/apis/blueimp/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
+    <script type="text/javascript" src="https://gicwebsrv.csuchico.edu/webmaps/apis/blueimp/blueimp-file-upload/js/jquery.fileupload.js"></script>
+    <script type="text/javascript" src="https://gicwebsrv.csuchico.edu/webmaps/apis/jquery/plugins/cloudinary-jquery/cloudinary-jquery-file-upload.js"></script>
+
+    <!-- Scripts Local -->
+    <script type="text/javascript" src="js/main.js"></script>
+
+</body>
+</html>
