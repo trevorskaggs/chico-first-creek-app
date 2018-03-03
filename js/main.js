@@ -279,7 +279,7 @@ function events() {
 
     // Changes selected marker image back to default or removes marker if just created
     $(".create_point input[value='CANCEL']").click(function(e) {
-        if (holdMarker)
+        if (holdMarker != null)
             holdMarker._icon.src = "https://gicwebsrv.csuchico.edu/webmaps/apis/leaflet/images/marker-icon.png";
         $(this).parent().parent().hide();
         $(".default_container").show();
@@ -290,7 +290,7 @@ function events() {
     });
 
     $(".point_data input[value='CLOSE']").click(function(e) {
-        if (holdMarker)
+        if (holdMarker != null)
             holdMarker._icon.src = "https://gicwebsrv.csuchico.edu/webmaps/apis/leaflet/images/marker-icon.png";
         $(this).parent().parent().hide();
         $(".default_container").show();
@@ -350,7 +350,7 @@ function events() {
                         $(".point_data .description").html(description);
                         $(".create_form form #name").val("");
                         $(".create_form form textarea").val("");
-                        if (holdMarker)
+                        if (holdMarker != null)
                             holdMarker._icon.src = "https://gicwebsrv.csuchico.edu/webmaps/apis/leaflet/images/marker-icon.png";
                         $(".default_container").show();
                     } else {
@@ -418,7 +418,7 @@ function events() {
         $.getJSON("https://" + Config.cartoDB.user + ".carto.com/api/v2/sql/?q=DELETE FROM " + Config.cartoDB.filename + " WHERE cartodb_id=" + carto_id + "&api_key=" + Config.cartoDB.api_key, function(d, s) {
             if (marker)
                 map.removeLayer(marker);
-            if (holdMarker)
+            if (holdMarker != null)
                 map.removeLayer(holdMarker);
             $(".default_container").show();
         })
@@ -545,9 +545,12 @@ function getInfo() {
 
 }
 
+var test;
+
 function clearInfo() {
-    if (holdMarker)
+    if (holdMarker != null && holdMarker._icon != null){
         holdMarker._icon.src = "https://gicwebsrv.csuchico.edu/webmaps/apis/leaflet/images/marker-icon.png";
+    }
     $(".point_data .location").html("");
     $(".point_data .description").html("");
     $(".img_container_before, .img_container_after").empty();
